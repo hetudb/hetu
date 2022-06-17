@@ -90,7 +90,7 @@ on [Docker Hub](https://hub.docker.com/) because the resulting Docker image will
 to the repo.
 
 ```bash
-DOCKER_REPO=myrepo ./dev/build-ballista-docker-arm64.sh
+DOCKER_REPO=myrepo ./dev/build-hetu-docker-arm64.sh
 ```
 
 On the Raspberry Pi:

@@ -1,0 +1,989 @@
+// Copyright 2021 HetuDB.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License
+
+syntax = "proto3";
+package meta;
+
+/**
+This file contains the protocol to communicate with
+Cloud Service. Cloud Service manages the tenant for hetu.
+This is similar to cloud service for Hetu.
+*/
+
+import "common.proto";
+import "security.proto";
+import "schema.proto";
+
+enum Type {
+    CmdType = 0;
+
+    // Tenant Option
+    CreateTenant = 5;
+    ListTenant = 6;
+    DeleteTenant = 7;
+    GetTenant = 8;
+    SetTenantProperty = 9;
+
+    // Database Option
+    CreateDatabase = 10;
+    ListDatabase = 11;
+    DeleteDatabase = 12;
+    GetDatabase = 13;
+    SetDatabaseProperty = 14;
+
+    // Table Option
+    CreateTable = 20;
+    SetTableProperty = 21;
+    DeleteTable = 22;
+    InfoTable = 23;
+    ListTable = 24;
+
+    // Partition Option
+    CreatePartition = 30;
+    DeletePartition = 31;
+    DeletePartitions = 32;
+    InfoPartition = 33;
+    ListPartitions = 34;
+    SetPartitionProperty = 35;
+
+    // Tablet Option
+    CreateTablet = 40;
+    DeleteTablet = 41;
+    DeleteTablets = 42;
+    AllocateTablet = 43;
+    ListTablets = 44;
+    CommitTablet = 45;
+    DeleteOpenTablets = 46;
+    PurgeTablets = 47;
+    LookupTablet = 48;
+}
+
+message HetuRequest {
+    Type cmdType = 1; // Type of the command
+
+    // A string that identifies this command, we generate  Trace ID in Hetu
+    // frontend and this allows us to trace that command all over hetu.
+    optional string traceID = 2;
+
+    string clientId = 3;
+
+    optional UserInfo userInfo = 4;
+    optional uint32 version = 5;
+
+    // Tenant option
+    optional CreateTenantRequest createTenantRequest = 10;
+    optional ListTenantRequest listTenantRequest = 11;
+    optional DeleteTenantRequest deleteTenantRequest = 12;
+    optional GetTenantRequest getTenantRequest = 13;
+    optional SetTenantPropertyRequest setTenantPropertyRequest = 14;
+
+    // Database option
+    optional CreateDatabaseRequest            createDatabaseRequest = 20;
+    optional ListDatabaseRequest              listDatabaseRequest = 21;
+    optional DeleteDatabaseRequest            deleteDatabaseRequest = 22;
+    optional GetDatabaseRequest               getDatabaseRequest = 23;
+    optional SetDatabasePropertyRequest       setDatabasePropertyRequest = 24;
+
+    // Table option
+    optional CreateTableRequest               createTableRequest = 30;
+    optional SetTablePropertyRequest          setTablePropertyRequest = 31;
+    optional DeleteTableRequest               deleteTableRequest = 32;
+    optional InfoTableRequest                 infoTableRequest = 33;
+    optional ListTablesRequest                listTablesRequest = 34;
+
+    // Partition option
+    optional CreatePartitionRequest              createPartitionRequest = 40;
+    optional DeletePartitionRequest              deletePartitionRequest = 41;
+    optional DeletePartitionsRequest             deletePartitionsRequest = 42;
+    optional InfoPartitionRequest                infoPartitionRequest = 43;
+    optional ListPartitionsRequest               listPartitionsRequest = 44;
+    optional SetPartitionPropertyRequest         setPartitionPropertyRequest = 45;
+
+    // Tablet option
+    optional CreateTabletRequest              createTabletRequest = 50;
+    optional DeleteTabletRequest              deleteTabletRequest = 51;
+    optional DeleteTabletsRequest             deleteTabletsRequest = 52;
+    optional AllocateTabletRequest            allocateTabletRequest = 53;
+    optional ListTabletsRequest               listTabletsRequest = 54;
+    optional CommitTabletRequest              commitTabletRequest = 55;
+    optional DeleteOpenTabletsRequest         deleteOpenTabletsRequest = 56;
+    optional PurgeTabletsRequest              purgeTabletsRequest = 57;
+    optional LookupTabletRequest                 lookupTabletRequest = 58;
+
+    optional ServiceListRequest               serviceListRequest = 60;
+    optional DBUpdatesRequest                  dbUpdatesRequest = 61;
+
+    optional security.GetDelegationTokenRequestProto getDelegationTokenRequest = 70;
+    optional security.RenewDelegationTokenRequestProto renewDelegationTokenRequest = 71;
+    optional security.CancelDelegationTokenRequestProto cancelDelegationTokenRequest = 72;
+    optional UpdateGetDelegationTokenRequest updateGetDelegationTokenRequest = 73;
+    optional UpdateRenewDelegationTokenRequest updatedRenewDelegationTokenRequest = 74;
+}
+
+message HetuResponse {
+    Type cmdType = 1; // Type of the command
+
+    // A string that identifies this command, we generate  Trace ID in Hetu
+    // frontend and this allows us to trace that command all over hetu.
+    optional string traceID = 2;
+
+    optional bool success = 3; // [default = true];
+
+    optional string message = 4;
+
+    Status status = 5;
+
+    optional string leaderHetuCSNodeId = 6;
+
+    // Tenant option
+    optional CreateTenantResponse             createTenantResponse = 10;
+    optional ListTenantResponse               listTenantResponse = 11;
+    optional DeleteTenantResponse             deleteTenantResponse = 12;
+    optional GetTenantResponse                getTenantResponse = 13;
+    optional SetTenantPropertyResponse        setTenantPropertyResponse = 14;
+
+    // Database option
+    optional CreateDatabaseResponse             createDatabaseResponse = 20;
+    optional ListDatabaseResponse               listDatabaseResponse = 21;
+    optional DeleteDatabaseResponse             deleteDatabaseResponse = 22;
+    optional GetDatabaseResponse                getDatabaseResponse = 23;
+    optional SetDatabasePropertyResponse        setDatabasePropertyResponse = 24;
+
+    // Table option
+    optional CreateTableResponse              createTableResponse = 30;
+    optional SetTablePropertyResponse         setTablePropertyResponse = 31;
+    optional DeleteTableResponse              deleteTableResponse = 32;
+    optional InfoTableResponse                infoTableResponse = 33;
+    optional ListTablesResponse               listTablesResponse = 34;
+
+    // Partition option
+    optional CreatePartitionResponse              createPartitionResponse = 40;
+    optional DeletePartitionResponse              deletePartitionResponse = 41;
+    optional DeletePartitionsResponse             deletePartitionsResponse = 42;
+    optional InfoPartitionResponse                infoPartitionResponse = 43;
+    optional ListPartitionsResponse               listPartitionsResponse = 44;
+    optional SetPartitionPropertyResponse         setPartitionPropertyResponse = 45;
+
+    // Tablet option
+    optional CreateTabletResponse              createTabletResponse = 50;
+    optional DeleteTabletResponse              deleteTabletResponse = 51;
+    optional DeleteTabletsResponse             deleteTabletsResponse = 52;
+    optional AllocateTabletResponse            allocateTabletResponse = 53;
+    optional ListTabletsResponse               listTabletsResponse = 54;
+    optional CommitTabletResponse              commitTabletResponse = 55;
+    optional PurgeTabletsResponse              purgeTabletsResponse = 56;
+    optional LookupTabletResponse                 lookupTabletResponse = 57;
+
+
+    optional ServiceListResponse               ServiceListResponse = 60;
+    optional DBUpdatesResponse                 dbUpdatesResponse = 61;
+
+    optional GetDelegationTokenResponseProto getDelegationTokenResponse = 70;
+    optional RenewDelegationTokenResponseProto renewDelegationTokenResponse = 71;
+    optional CancelDelegationTokenResponseProto cancelDelegationTokenResponse = 72;
+}
+
+enum Status {
+    OK = 0;
+
+    USER_NOT_FOUND = 10;
+    ACCESS_DENIED = 11;
+    INTERNAL_ERROR = 12;
+    METADATA_ERROR = 13;
+    HETU_CLOUD_SERVICE_NOT_INITIALIZED = 14;
+    HETU_WORKER_VERSION_MISMATCH_ERROR = 15;
+
+
+    INVALID_AUTH_METHOD = 20;
+    INVALID_TOKEN = 21;
+    TOKEN_EXPIRED = 22;
+    TOKEN_ERROR_OTHER = 23;
+    HETU_CLOUD_SERVICE_IN_SAFE_MODE = 24;
+    INVALID_REQUEST = 25;
+
+    UNKNOWN_CIPHER_SUITE = 30;
+    TOKEN_CREATION_ERROR = 31;
+
+    NOT_A_FILE = 40;
+    PERMISSION_DENIED = 41;
+    TIMEOUT = 42;
+    PREFIX_NOT_FOUND = 43;
+
+    RAFT_ERROR = 44;
+
+    USER_MISMATCH = 45; // Error code when requested user name passed is
+  // different from remote user.
+
+    INVALID_PART = 50;
+    INVALID_PART_ORDER = 51;
+    SCM_GET_PIPELINE_EXCEPTION = 52;
+
+    NOT_SUPPORTED_OPERATION = 53;
+
+    QUOTA_EXCEEDED = 54;
+
+    QUOTA_ERROR = 55;
+
+    DATABASE_ALREADY_EXISTS = 56;
+
+    DATABASE_NOT_FOUND = 57;
+
+    DATABASE_NOT_EMPTY = 58;
+
+    USER_TOO_MANY_DATABASES = 59;
+
+    INVALID_DATABASE_NAME = 60;
+
+    INVALID_TABLE_NAME = 61;
+
+    TABLE_ALREADY_EXISTS = 62;
+
+    TABLE_NOT_FOUND = 63;
+
+    TABLE_NOT_EMPTY = 64;
+
+    INVALID_PARTITION_NAME = 65;
+
+    PARTITION_ALREADY_EXISTS = 66;
+
+    PARTITION_NOT_FOUND = 67;
+
+    PARTITION_NOT_EMPTY = 68;
+
+    INVALID_TABLET_NAME = 69;
+
+    TABLET_NOT_FOUND = 70;
+
+    TENANT_ALREADY_EXISTS = 71;
+
+    TENANT_NOT_FOUND = 72;
+
+    TENANT_NOT_EMPTY = 73;
+
+    USER_TOO_MANY_TENANTS = 74;
+
+    INVALID_TENANT_NAME = 75;
+}
+
+message TenantInfo {
+    string name = 1;
+    optional uint64 creationTime = 3;
+    optional uint64 modificationTime = 4;
+    repeated common.KeyValue metadata = 5;
+    optional uint64 quotaInBytes = 6;
+    optional int32  quotaInTable = 7; // [default = -2];
+    optional uint64  usedNamespace = 8;
+
+    optional uint64 objectID = 11;
+    optional uint64 updateID = 12;
+}
+
+message DatabaseInfo {
+    string tenantName = 1;
+    string databaseName = 2;
+    optional uint64 creationTime = 3;
+    optional uint64 modificationTime = 4;
+    repeated common.KeyValue metadata = 5;
+    optional uint64 quotaInBytes = 6;
+    optional int32  quotaInTable = 7; // [default = -2];
+    optional uint64  usedNamespace = 8;
+
+    optional uint64 objectID = 11;
+    optional uint64 updateID = 12;
+}
+
+
+message TableInfo {
+    enum StorageEngineProto {
+        LSTORE = 0;
+        CSTORE = 1;
+    }
+
+    string tenantName = 1;
+    string databaseName = 2;
+    string tableName = 3;
+    schema.SchemaProto schema = 4;
+    StorageEngineProto storageEngine = 5; // [default = LSTORE];
+    bool isVersionEnabled = 6; // [default = false];
+    StorageTypeProto storageType = 7; // [default = DISK];
+    int32 numReplicas = 8;
+    int32 buckets = 9; // [default = 8];
+    repeated common.KeyValue metadata = 10;
+    optional uint64 creationTime = 11;
+    optional uint64 modificationTime = 12;
+
+    optional uint64 objectID = 17;
+    optional uint64 updateID = 18;
+}
+
+message PartitionInfo {
+    string tenantName = 1;
+    string databaseName = 2;
+    string tableName = 3;
+    string partitionName = 4;
+    string partitionValue = 5;
+    uint64 rows = 6;
+    int32 buckets = 7;
+    StorageTypeProto storageType = 8; // [default = DISK];
+    bool isVersionEnabled = 9; // [default = false];
+    optional uint64 creationTime = 10;
+    optional uint64 modificationTime = 11;
+    repeated common.KeyValue metadata = 12;
+    uint64 sizeInBytes = 13;
+    optional uint64 objectID = 14;
+    optional uint64 updateID = 15;
+}
+
+message TabletInfo {
+    string tenantName = 1;
+    string databaseName = 2;
+    string tableName = 3;
+    string partitionName = 4;
+    string tabletName = 5;
+    uint64 dataSize = 6;
+    common.ReplicationType type = 7;
+    common.ReplicationFactor factor = 8;
+    repeated TabletLocationList tabletLocationList = 9;
+    optional uint64 latestVersion = 10;
+    optional uint64 creationTime = 11;
+    optional uint64 modificationTime = 12;
+    repeated common.KeyValue metadata = 13;
+    optional uint64 objectID = 14;
+    optional uint64 updateID = 15;
+}
+
+/**
+    User information which will be extracted during RPC context and used
+    during validating Acl.
+*/
+message UserInfo {
+    optional string userName = 1;
+    optional string remoteAddress = 3;
+    optional string hostName = 4;
+}
+
+/**
+  This will be used during OM HA, once leader generates token sends this
+  request via ratis to persist to OM DB. This request will be internally used
+   by OM for replicating token across a quorum of OMs.
+*/
+message UpdateGetDelegationTokenRequest {
+    GetDelegationTokenResponseProto getDelegationTokenResponse = 1;
+    optional uint64 tokenRenewInterval = 2;
+}
+
+/**
+  This will be used during OM HA, once leader renews token, sends this
+   request via ratis to persist to OM DB. This request will be internally used
+   by OM for replicating renewed token information across a quorum of OMs.
+*/
+message UpdateRenewDelegationTokenRequest {
+    security.RenewDelegationTokenRequestProto
+            renewDelegationTokenRequest = 1;
+    RenewDelegationTokenResponseProto renewDelegationTokenResponse = 2;
+}
+
+/**
+  creates a tenant
+ */
+message CreateTenantRequest {
+    TenantInfo tenantInfo = 1;
+}
+
+message CreateTenantResponse {
+
+}
+
+/**
+  list tenant
+ */
+message ListTenantRequest {
+    enum Scope {
+        USER_TENANTS = 0;   // User tenants -- called by user
+        TENANTS_BY_USER = 1; // User tenants - called by Admin
+        TENANTS_BY_CLUSTER = 2; // All tenants in the cluster
+    }
+    Scope scope = 1;
+    optional string userName = 2;
+    optional string prefix = 3;
+    optional string prevKey = 4;
+    optional uint32 maxKeys = 5;
+}
+
+message ListTenantResponse {
+    repeated TenantInfo tenantInfo = 1;
+}
+
+/**
+ get a tenant
+ */
+message GetTenantRequest {
+    string name = 1;
+}
+
+message GetTenantResponse {
+    TenantInfo tenantInfo = 1;
+}
+
+/**
+update a tenant
+ */
+message SetTenantPropertyRequest {
+    string tenantName = 1;
+    optional string ownerName = 2;
+    optional uint64 quotaInBytes = 3;
+    optional uint64 modificationTime = 4;
+    optional int32 quotaInDatabase = 5;
+}
+
+message SetTenantPropertyResponse {
+    optional bool response = 1;
+}
+
+/**
+delete a tenant
+ */
+message DeleteTenantRequest {
+    string name = 1;
+}
+
+message DeleteTenantResponse {
+}
+
+/**
+  creates a database
+ */
+message CreateDatabaseRequest {
+    DatabaseInfo databaseInfo = 1;
+}
+
+message CreateDatabaseResponse {
+
+}
+
+/**
+  list database
+ */
+message ListDatabaseRequest {
+    enum Scope {
+        USER_DATABASES = 0;   // User databases -- called by user
+        DATABASES_BY_USER = 1; // User databases - called by Admin
+        DATABASES_BY_CLUSTER = 2; // All databases in the cluster
+    }
+    Scope scope = 1;
+    optional string userName = 2;
+    optional string prefix = 3;
+    optional string prevKey = 4;
+    optional uint32 maxKeys = 5;
+}
+
+message ListDatabaseResponse {
+    repeated DatabaseInfo databaseInfo = 1;
+}
+
+/**
+ get a database
+ */
+message GetDatabaseRequest {
+    string name = 1;
+}
+
+message GetDatabaseResponse {
+    DatabaseInfo databaseInfo = 1;
+}
+
+/**
+update a database
+ */
+message SetDatabasePropertyRequest {
+    string databaseName = 1;
+    optional string ownerName = 2;
+    optional uint64 quotaInBytes = 3;
+    optional uint64 modificationTime = 4;
+    optional int32 quotaInTable = 5;
+}
+
+message SetDatabasePropertyResponse {
+    optional bool response = 1;
+}
+
+/**
+delete a database
+ */
+message DeleteDatabaseRequest {
+    string name = 1;
+}
+
+message DeleteDatabaseResponse {
+}
+
+
+enum StorageTypeProto {
+    DISK = 0;
+    SSD = 1;
+    ARCHIVE = 2;
+    RAM_DISK = 3;
+}
+
+/**
+ * Cipher suite.
+ */
+enum CipherSuiteProto {
+    UNKNOWN = 0;
+    AES_CTR_NOPADDING = 1;
+}
+
+/**
+ * Crypto protocol version used to access encrypted files.
+ */
+enum CryptoProtocolVersionProto {
+    UNKNOWN_PROTOCOL_VERSION = 0;
+    ENCRYPTION_ZONES = 1;
+}
+
+
+message DataEncryptionBlockProto {
+    uint32 blockId = 1;
+    bytes nonce = 3;
+    bytes encryptionBlock = 4;
+    uint64 expiryDate = 5;
+    optional string encryptionAlgorithm = 6;
+}
+
+message TableArgs {
+    string databaseName = 1;
+    string tableName = 2;
+    schema.SchemaProto schema = 3;
+    bool isVersionEnabled = 4; // [default = false];
+    StorageTypeProto storageType = 5; // [default = DISK];
+    int32 numReplicas = 6;
+    int32 buckets = 7;
+    repeated common.KeyValue metadata = 8;
+    optional uint64 usedBytes = 9;
+    optional uint64 quotaInBytes = 10;
+    optional int32 usedBucket = 11;
+    optional int32  quotaInBucket = 12;
+}
+
+message PartitionArgs {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+    string partitionValue = 4;
+    bool isVersionEnabled = 5; // [default = false];
+    StorageTypeProto storageType = 6; // [default = DISK];
+    int32 numReplicas = 7;
+    repeated common.KeyValue metadata = 8;
+    optional uint64 sizeInBytes = 9;
+    optional uint64 rows = 10;
+}
+
+message HetuObj {
+    enum ObjectType {
+        DATABASE = 0;
+        TABLE = 1;
+        PARTITION = 2;
+        TABLET = 3;
+        PREFIX = 4;
+    }
+
+    enum StoreType {
+        S3 = 0;
+        LOCAL = 1;
+    }
+    ObjectType resType = 1;
+    StoreType storeType = 2;  // [default = S3];
+    string path = 3;
+}
+
+message CreateTableRequest {
+    TableInfo tableInfo = 1;
+}
+
+message CreateTableResponse {
+}
+
+message CreatePartitionRequest {
+    PartitionInfo partitionInfo = 1;
+}
+
+message CreatePartitionResponse {
+}
+
+message InfoTableRequest {
+    string databaseName = 1;
+    string tableName = 2;
+}
+
+message InfoTableResponse {
+    optional TableInfo tableInfo = 2;
+}
+
+message InfoPartitionRequest {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+}
+
+message InfoPartitionResponse {
+    optional PartitionInfo partitionInfo = 2;
+}
+
+message SetTablePropertyRequest {
+    optional TableArgs tableArgs = 1;
+}
+
+message SetTablePropertyResponse {
+
+}
+
+message SetPartitionPropertyRequest {
+    optional PartitionArgs partitionArgs = 1;
+}
+
+message SetPartitionPropertyResponse {
+
+}
+
+message DeleteTableRequest {
+    string databaseName = 1;
+    string tableName = 2;
+}
+
+message DeleteTableResponse {
+
+}
+
+message DeletePartitionRequest {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+}
+
+message DeletePartitionResponse {
+
+}
+
+message DeletePartitionsRequest {
+    optional DeletePartitionArgs deletePartitions = 1;
+}
+
+message DeletePartitionArgs {
+    string databaseName = 1;
+    string tableName = 2;
+    repeated string partitionNames = 3;
+}
+
+message DeletePartitionsResponse {
+}
+
+message ListTablesRequest {
+    string databaseName = 1;
+    optional string startKey = 2;
+    optional string prefix = 3;
+    optional int32 count = 4;
+}
+
+message ListTablesResponse {
+
+    repeated TableInfo tableInfo = 2;
+}
+
+message ListPartitionsRequest {
+    string databaseName = 1;
+    string tableName = 2;
+    optional string startKey = 3;
+    optional string prefix = 4;
+    optional int32 count = 5;
+}
+
+message ListPartitionsResponse {
+
+    repeated PartitionInfo partitionInfo = 2;
+}
+
+message TabletArgs {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+    string tabletName = 4;
+    optional uint64 dataSize = 5;
+    optional common.ReplicationType type = 6;
+    optional common.ReplicationFactor factor = 7;
+    repeated TabletLocation tabletLocations = 8;
+    repeated common.KeyValue metadata = 9;
+    // This will be set when the request is received in pre-Execute. This
+    // value is used in setting creation/modification time depending on the
+    // request type.
+    optional uint64 modificationTime = 10;
+    optional bool sortDatanodes = 11;
+    optional bool isMultipartTablet = 12; // [default = false];
+    optional uint32 multipartNumber = 13;
+    //  optional string multipartUploadID = 14;
+}
+
+message TabletLocation {
+    common.BlockID blockID = 1;
+    uint64 offset = 3;
+    uint64 length = 4;
+    // indicated at which version this block gets created.
+    optional uint64 createVersion = 5;
+    optional common.TokenProto token = 6;
+    // Walk around to include pipeline info for client read/write
+    // without talking to scm.
+    // NOTE: the pipeline info may change after pipeline close.
+    // So eventually, we will have to change back to call scm to
+    // get the up to date pipeline information. This will need o3fs
+    // provide not only a OM delegation token but also a SCM delegation token
+    optional common.Pipeline pipeline = 7;
+
+    optional int32 partNumber = 9; // [default = -1];
+    optional uint64 startKey = 10;
+    optional uint64 endKey = 11;
+}
+
+message TabletLocationList {
+    optional uint64 version = 1;
+    repeated TabletLocation tabletLocation = 2;
+    optional bool isMultipartTablet = 3; // [default = false];
+}
+
+message HetuTabletStatusProto {
+    optional TabletInfo tabletInfo = 2;
+    optional uint64 blockSize = 3;
+
+}
+
+message CreateTabletRequest {
+    TabletArgs tabletArgs = 1;
+    // Set in OM HA during preExecute step. This way all OM's use same ID in
+    // OM HA.
+    optional uint64 clientID = 2;
+}
+
+message CreateTabletResponse {
+    optional TabletInfo tabletInfo = 2;
+    // clients' followup request may carry this ID for stateful operations
+    // (similar to a cookie).
+    optional uint64 ID = 3;
+    optional uint64 openVersion = 4;
+}
+
+message LookupTabletRequest {
+    TabletArgs tabletArgs = 1;
+}
+
+message LookupTabletResponse {
+    optional TabletInfo tabletInfo = 2;
+    // clients' followup request may carry this ID for stateful operations (similar
+    // to a cookie).
+    optional uint64 ID = 3;
+    // TODO : allow specifying a particular version to read.
+    optional uint64 openVersion = 4;
+}
+
+message DeleteTabletRequest {
+    TabletArgs tabletArgs = 1;
+}
+
+message DeleteTabletsRequest {
+    optional DeleteTabletArgs deleteTablets = 1;
+}
+
+message DeleteTabletArgs {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+    repeated string tablets = 4;
+}
+
+message DeleteTabletResponse {
+
+    optional TabletInfo tabletInfo = 2;
+    // clients' followup request may carry this ID for stateful operations
+    // (similar to a cookie).
+    optional uint64 ID = 3;
+    optional uint64 openVersion = 4;
+}
+
+message DeleteTabletsResponse {
+    optional DeleteTabletArgs unDeletedTablets = 1;
+    optional bool status = 2;
+}
+
+message PurgeTabletsRequest {
+    repeated DeletedTablets deletedTablets = 1;
+}
+
+message PurgeTabletsResponse {
+
+}
+
+message DeletedTablets {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+    repeated string tablets = 4;
+}
+
+message DeleteOpenTabletsRequest {
+    repeated OpenTabletPartition openTabletsPerPartition = 1;
+}
+
+message OpenTabletPartition {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+    repeated OpenTablet tablets = 4;
+}
+
+message OpenTablet {
+    string name = 1;
+    uint64 clientID = 2;
+}
+
+message HetuTokenProto {
+    enum Type {
+        DELEGATION_TOKEN = 0;
+        S3AUTHINFO = 1;
+    };
+    Type   type = 1;
+    optional uint32 version = 2;
+    optional string owner = 3;
+    optional string renewer = 4;
+    optional string realUser = 5;
+    optional uint64 issueDate = 6;
+    optional uint64 maxDate = 7;
+    optional uint32 sequenceNumber = 8;
+    optional uint32 masterKeyId = 9;
+    optional uint64 expiryDate = 10;
+    optional string omCertSerialId = 11;
+    optional string accessKeyId = 12;
+    optional string signature = 13;
+    optional string strToSign = 14;
+    optional string omServiceId = 15;
+}
+
+message SecretKeyProto {
+    uint32 keyId = 1;
+    uint64 expiryDate = 2;
+    bytes privateKeyBytes = 3;
+    bytes publicKeyBytes = 4;
+}
+
+message ListTabletsRequest {
+    string databaseName = 1;
+    string tableName = 2;
+    string partitionName = 3;
+    optional string startTablet = 4;
+    optional string prefix = 5;
+    optional int32 count = 6;
+}
+
+message ListTabletsResponse {
+    repeated TabletInfo tabletInfo = 2;
+}
+
+message CommitTabletRequest {
+    TabletArgs tabletArgs = 1;
+    uint64 clientID = 2;
+}
+
+message CommitTabletResponse {
+
+}
+
+message AllocateTabletRequest {
+    TabletArgs tabletArgs = 1;
+    uint64 clientID = 2;
+    optional common.ExcludeListProto excludeList = 3;
+    // During HA on one of the OM nodes, we allocate tablet and send the
+    // AllocateTabletRequest with tabletLocation set. If this is set, no need to
+    // call scm again in OM Ratis applyTransaction just append it to DB.
+    optional TabletLocation tabletLocation = 4;
+}
+
+message AllocateTabletResponse {
+
+    optional TabletLocation tabletLocation = 2;
+}
+
+message ServiceListRequest {
+}
+
+message DBUpdatesRequest {
+    uint64 sequenceNumber = 1;
+}
+
+message ServiceListResponse {
+
+    repeated ServiceInfo serviceInfo = 2;
+    // When security is enabled, return SCM CA certificate to Hetu client
+    // to set up gRPC TLS for client to authenticate server(DN).
+    optional string caCertificate = 3;
+
+    repeated string caCerts = 4;
+}
+
+message DBUpdatesResponse {
+    uint64 sequenceNumber = 1;
+    repeated bytes data = 2;
+}
+
+message ServicePort {
+    enum Type {
+        RPC = 0;
+        HTTP = 1;
+        HTTPS = 2;
+        RAFT = 3;
+    };
+    Type type = 1;
+    uint32 value = 2;
+}
+
+message HetuRoleInfo {
+    string nodeId = 1;
+    string serverRole = 2;
+}
+
+message ServiceInfo {
+    common.NodeType nodeType = 1;
+    string hostname = 2;
+    repeated ServicePort servicePorts = 3;
+    optional HetuRoleInfo hetuRole = 4;
+}
+
+message GetDelegationTokenResponseProto {
+
+    optional security.GetDelegationTokenResponseProto response = 2;
+}
+
+message RenewDelegationTokenResponseProto {
+
+    optional security.RenewDelegationTokenResponseProto response = 2;
+}
+
+message CancelDelegationTokenResponseProto {
+
+    optional security.CancelDelegationTokenResponseProto response = 2;
+}
+
+/**
+ The cloud service that takes care of Hetu tenant.
+*/
+service HetuCloudManagerService {
+    // A client-to-HCS RPC to send client requests to Hetu Raft server
+    rpc submitRequest(HetuRequest)
+            returns(HetuResponse);
+}

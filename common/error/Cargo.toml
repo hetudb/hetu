@@ -1,0 +1,17 @@
+[package]
+name = "hetu-error"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "hetu_error"
+path = "src/lib.rs"
+
+[dependencies]
+# Workspace dependencies
+datafusion = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
+
+# Github dependencies
+
+# Crates.io dependencies

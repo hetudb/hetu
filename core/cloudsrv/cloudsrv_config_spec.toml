@@ -1,0 +1,43 @@
+# Copyright 2021 HetuDB.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License
+
+[general]
+name = "Hetu Colud Service"
+env_prefix = "HETU_CLOUD_SERVICE"
+conf_file_param = "config_file"
+
+[[switch]]
+name = "version"
+doc = "Print version of this executable"
+
+# Namespace for the ballista cluster that this executor will join. Default: hetu
+namespace = "hetu"
+
+# etcd urls for use when discovery mode is `etcd`. Default: localhost:2379
+etcd_urls = "localhost:2379"
+
+# Local host name or IP address to bind to. Default: 0.0.0.0
+bind_host = "0.0.0.0"
+
+# bind port. Default: 50050
+bind_port = 50050
+
+# The scheduing policy for the scheduler, see TaskSchedulingPolicy::variants() for options. Default: PullStaged
+scheduler_policy = "PullStaged"
+
+# MySQL handler local host name or IP address to bind to. Default: 127.0.0.1
+mysql_handler_host = "0.0.0.0"
+
+# MySQL handler local bind port. Default: 3307
+mysql_handler_port = 3306

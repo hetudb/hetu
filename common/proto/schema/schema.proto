@@ -1,0 +1,72 @@
+// Copyright 2021 HetuDB.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License
+
+syntax = "proto3";
+package schema;
+
+message SchemaProto {
+  enum TypeProto {
+    HASH = 0;
+    RANGE = 1;
+    LIST = 2;
+  }
+
+  message PartitionKeyProto {
+    TypeProto partitionKeyType = 1;
+    repeated string fields = 2;
+    optional int32 partitions = 3;
+  }
+
+  message DistributedKeyProto {
+    TypeProto distributedKeyType = 1; // [default = HASH]
+    repeated string fields = 2;
+    optional int32 buckets = 3; // [default = 8]
+  }
+
+  enum ColumnKeyTypeProto {
+    PRIMARY_KEY = 0;
+    UNIQUE_KEY = 1;
+    AGGREGATE_KEY = 2;
+    NO_KEY = 3;
+  }
+
+  message ColumnKeyProto {
+    ColumnKeyTypeProto columnKeyType = 1;
+    repeated string fields = 2;
+  }
+
+  repeated ColumnSchemaProto columns = 1;
+  PartitionKeyProto partitionKey = 2;
+  DistributedKeyProto distributedKey = 3;
+  ColumnKeyProto columnKey = 4;
+}
+
+message ColumnSchemaProto {
+  message ColumnTypeAttributesProto {
+    int32  precision = 1;
+    int32 scale = 2;
+    int32 length = 3;
+  }
+
+  string columnName = 1;
+  string columnType = 2;
+  optional int32 desiredSize = 4;
+  optional string defaultValue = 5;
+  optional string extra = 7;
+  optional string columnComment = 8;
+  optional bool   isNullable = 9;
+  optional string wireType = 10;
+  optional int32 typeSize = 11;
+  optional ColumnTypeAttributesProto columnTypeAttributes = 12;
+}

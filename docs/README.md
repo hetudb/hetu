@@ -23,7 +23,7 @@ Developer documentation can be found [here](developer/).
 
 # User Documentation
 
-_These instructions were forked from the `arrow-datafusion` repository and are outdated_
+_These instructions were forked from the `hetu` repository and are outdated_
 
 ## Dependencies
 

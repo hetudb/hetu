@@ -30,6 +30,6 @@ SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ${SOURCE_DIR}/update_change_log.sh \
     datafusion \
     "${BASE_TAG}" \
-    --exclude-tags-regex "(python|ballista)-.+" \
+    --exclude-tags-regex "(python|hetu)-.+" \
     --future-release "${RELEASE_TAG}" \
     --release-branch "${RELEASE_BRANCH}"

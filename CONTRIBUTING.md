@@ -1,20 +1,17 @@
 <!---
-  Licensed to the Apache Software Foundation (ASF) under one
-  or more contributor license agreements.  See the NOTICE file
-  distributed with this work for additional information
-  regarding copyright ownership.  The ASF licenses this file
-  to you under the Apache License, Version 2.0 (the
-  "License"); you may not use this file except in compliance
-  with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
-  specific language governing permissions and limitations
-  under the License.
+  Copyright 2021 HetuDB.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
 -->
 
 # Introduction
@@ -28,15 +25,15 @@ We welcome and encourage contributions of all kinds, such as:
 In addition to submitting new PRs, we have a healthy tradition of community members helping review each other's PRs. Doing so is a great way to help the community as well as get more familiar with Rust and the relevant codebases.
 
 You can find a curated
-[good-first-issue](https://github.com/apache/arrow-datafusion/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[good-first-issue](https://github.com/hetudb/hetu/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 list to help you get started.
 
 # Developer's guide
 
 This section describes how you can get started at developing DataFusion.
 
-For information on developing with Ballista, see the
-[Ballista developer documentation](ballista/docs/README.md).
+For information on developing with Hetu, see the
+[Hetu developer documentation](docs/README.md).
 
 ### Bootstrap environment
 
@@ -168,7 +165,7 @@ The benchmark will automatically remove any generated parquet file on exit, howe
 
 ### Upstream Benchmark Suites
 
-Instructions and tooling for running upstream benchmark suites against DataFusion and/or Ballista can be found in [benchmarks](./benchmarks).
+Instructions and tooling for running upstream benchmark suites against DataFusion and/or Hetu can be found in [benchmarks](testing/benchmarks).
 
 These are valuable for comparative evaluation against alternative Arrow implementations and query engines.
 
@@ -263,5 +260,5 @@ $ prettier --version
 After you've confirmed your prettier version, you can format all the `.md` files:
 
 ```bash
-prettier -w README.md {ballista,dev,docs,examples}/**/*.md
+prettier -w README.md {hetu,dev,docs,examples}/**/*.md
 ```

@@ -94,7 +94,7 @@ html_context = {
     "github_user": "apache",
     "github_repo": "arrow-datafusion",
     "github_version": "master",
-    "doc_path": "docs/source",
+    "doc_path": "o_docs/source",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -107,5 +107,5 @@ html_logo = "_static/images/DataFusion-Logo-Background-White.png"
 html_css_files = ["theme_overrides.css"]
 
 html_sidebars = {
-    "**": ["docs-sidebar.html"],
+    "**": ["o_docs-sidebar.html"],
 }

@@ -30,7 +30,7 @@ Run the following commands to clone the source repository and build the Docker i
 ```bash
 git clone git@github.com:apache/arrow-datafusion.git -b 8.0.0
 cd arrow-datafusion
-./dev/build-ballista-docker.sh
+./dev/build-hetu-docker.sh
 ```
 
 This will create an image with the tag `ballista:0.7.0`.

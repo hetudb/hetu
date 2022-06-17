@@ -15,8 +15,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
-use ballista::prelude::{BallistaConfig, BallistaContext, Result};
 use datafusion::prelude::CsvReadOptions;
+use hetu_client::prelude::{BallistaConfig, HetuContext, Result};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -24,7 +24,7 @@ async fn main() -> Result<()> {
         .set("ballista.shuffle.partitions", "1")
         .build()?;
 
-    let ctx = BallistaContext::standalone(&config, 2).await?;
+    let ctx = HetuContext::standalone(&config, 2).await?;
 
     // register csv file with the execution context
     ctx.register_csv(

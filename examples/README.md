@@ -1,33 +1,30 @@
 <!---
-  Licensed to the Apache Software Foundation (ASF) under one
-  or more contributor license agreements.  See the NOTICE file
-  distributed with this work for additional information
-  regarding copyright ownership.  The ASF licenses this file
-  to you under the Apache License, Version 2.0 (the
-  "License"); you may not use this file except in compliance
-  with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
-  specific language governing permissions and limitations
-  under the License.
+  Copyright 2021 HetuDB.
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
 -->
 
-# Ballista Examples
+# Hetu Examples
 
-This directory contains examples for executing distributed queries with Ballista.
+This directory contains examples for executing distributed queries with Hetu.
 
 # Standalone Examples
 
-The standalone example is the easiest to get started with. Ballista supports a standalone mode where a scheduler
+The standalone example is the easiest to get started with. Hetu supports a standalone mode where a scheduler
 and executor are started in-process.
 
 ```bash
-cargo run --example standalone_sql --features="ballista/standalone"
+cargo run --example standalone_sql --features="hetu-client/standalone"
 ```
 
 ### Source code for standalone SQL example
@@ -39,7 +36,7 @@ async fn main() -> Result<()> {
         .set("ballista.shuffle.partitions", "1")
         .build()?;
 
-    let ctx = BallistaContext::standalone(&config, 2).await?;
+    let ctx = HetuContext::standalone(&config, 2).await?;
 
     ctx.register_csv(
         "test",
@@ -58,8 +55,8 @@ async fn main() -> Result<()> {
 
 # Distributed Examples
 
-For background information on the Ballista architecture, refer to
-the [Ballista README](../ballista/rust/client/README.md).
+For background information on the Hetu architecture, refer to
+the [Hetu Query README](../client/rust/client/README.md).
 
 ## Start a standalone cluster
 
@@ -69,18 +66,18 @@ From the root of the project, build release binaries.
 cargo build --release
 ```
 
-Start a Ballista scheduler process in a new terminal session.
+Start a Hetu scheduler process in a new terminal session.
 
 ```bash
-RUST_LOG=info ./target/release/ballista-scheduler
+RUST_LOG=info ./target/release/hetu-cloud-service
 ```
 
-Start one or more Ballista executor processes in new terminal sessions. When starting more than one
+Start one or more Hetu executor processes in new terminal sessions. When starting more than one
 executor, a unique port number must be specified for each executor.
 
 ```bash
-RUST_LOG=info ./target/release/ballista-executor -c 2 -p 50051
-RUST_LOG=info ./target/release/ballista-executor -c 2 -p 50052
+RUST_LOG=info ./target/release/hetu-executor -c 2 -p 50051
+RUST_LOG=info ./target/release/hetu-executor -c 2 -p 50052
 ```
 
 ## Running the examples
@@ -101,7 +98,7 @@ async fn main() -> Result<()> {
     let config = BallistaConfig::builder()
         .set("ballista.shuffle.partitions", "4")
         .build()?;
-    let ctx = BallistaContext::remote("localhost", 50050, &config).await?;
+    let ctx = HetuContext::remote("localhost", 50050, &config).await?;
 
     let filename = "testdata/alltypes_plain.parquet";
 
@@ -133,7 +130,7 @@ async fn main() -> Result<()> {
     let config = BallistaConfig::builder()
         .set("ballista.shuffle.partitions", "4")
         .build()?;
-    let ctx = BallistaContext::remote("localhost", 50050, &config).await?;
+    let ctx = HetuContext::remote("localhost", 50050, &config).await?;
 
     let filename = "testdata/alltypes_plain.parquet";
 

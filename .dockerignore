@@ -1,5 +1,5 @@
 .git
-ballista/ui/*
+core/cloudsrv/ui/*
 ci
 conbench
 dev

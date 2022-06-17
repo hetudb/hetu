@@ -1,0 +1,346 @@
+// Copyright 2021 HetuDB.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License
+
+syntax = "proto3";
+
+package common;
+
+message UUID {
+   int64 mostSigBits = 1;
+   int64 leastSigBits = 2;
+}
+
+message DatanodeDetailsProto {
+    // deprecated, please use uuid128 instead
+    optional string uuid = 1;  // UUID assigned to the Datanode.
+    string ipAddress = 2;     // IP address
+    string hostName = 3;      // hostname
+    repeated Port ports = 4;
+    optional string certSerialId = 5;   // Certificate serial id.
+    // network name, can be Ip address or host name, depends
+    optional string networkName = 6;
+    optional string networkLocation = 7; // Network topology location
+    optional NodeOperationalState persistedOpState = 8; // The Operational state persisted in the datanode.id file
+    optional int64 persistedOpStateExpiry = 9; // The seconds after the epoch when the OpState should expire
+    // TODO(runzhiwang): when uuid is gone, specify 1 as the index of uuid128 and mark as required
+    optional UUID uuid128 = 100; // UUID with 128 bits assigned to the Datanode.
+}
+
+/**
+ The DatanodeDetailsProto is a basic type that will be shared by many Proto,
+ to reduce the number of fields transferred by ProtoBuf, only need to extend
+ DatanodeDetailsProto for registering DataNode with SCM and Recon.
+*/
+message ExtendedDatanodeDetailsProto {
+    DatanodeDetailsProto datanodeDetails = 1;
+    optional string version = 2;
+    optional int64 setupTime = 3;
+    optional string revision = 4;
+    optional string buildDate = 5;
+}
+
+/**
+ Proto message encapsulating information to uniquely identify a
+ HetuCloudService.
+*/
+message HetuCloudServiceDetailsProto {
+    string uuid = 1;          // UUID assigned to the HetuCloudService.
+    string ipAddress = 2;     // IP address of OM.
+    string hostName = 3;      // Hostname of OM.
+    repeated Port ports = 4;
+}
+
+message HetuStorageNodeDetailsProto {
+    string dataNodeId = 1;     // Data Node Id.
+    string clusterId = 2;     // Cluster Id of HS cluster.
+    string hostName = 3;      // Hostname of HS.
+}
+
+message HetuServerNodeDetailsProto {
+    string hsNodeId = 1;     // HS Node Id.
+    string clusterId = 2;     // Cluster Id of HS cluster.
+    string hostName = 3;      // Hostname of HS.
+}
+
+message Port {
+    string name = 1;
+    uint32 value = 2;
+}
+
+message PipelineID {
+  // deprecated, please use uuid128 instead
+  optional string id = 1;
+  // TODO: when id is gone, specify 1 as the index of uuid128 and mark as required
+  optional UUID uuid128 = 100;
+}
+
+message TabletID {
+    uint64 id = 1;
+}
+
+enum PipelineState {
+    PIPELINE_ALLOCATED = 0;
+    PIPELINE_OPEN = 1;
+    PIPELINE_DORMANT = 2;
+    PIPELINE_CLOSED = 3;
+}
+
+message Pipeline {
+    repeated DatanodeDetailsProto members = 1;
+    // TODO: remove the state and leaderID from this class
+    optional PipelineState state = 2; // [default = PIPELINE_ALLOCATED];
+    optional ReplicationType type = 3; // [default = STAND_ALONE];
+    optional ReplicationFactor factor = 4; // [default = ONE];
+    PipelineID id = 5;
+    optional string leaderID = 6;
+    repeated uint32 memberOrders = 7;
+    optional uint64 creationTimeStamp = 8;
+    optional UUID suggestedLeaderID = 9;
+    // TODO: when leaderID is gone, specify 6 as the index of leaderID128
+    optional UUID leaderID128 = 100;
+}
+
+message KeyValue {
+    string key = 1;
+    optional string value = 2;
+}
+
+/**
+ * Type of the node.
+ */
+enum NodeType {
+    HCS = 0;         // Hetu Cloud Service
+    HC = 1;         // Hetu Compute Service
+    HSTM = 2;        // Hetu Storage Tablet Manager (Tablet, Block、Chunk)
+    DATANODE = 3;   // DataNode
+    RECON = 4;      // Recon
+}
+
+// Should we rename NodeState to DatanodeState?
+/**
+ * Enum that represents the Node State. This is used in calls to getNodeList
+ * and getNodeCount.
+ */
+enum NodeState {
+    HEALTHY = 0;
+    STALE = 1;
+    DEAD = 2;
+}
+
+enum NodeOperationalState {
+    IN_SERVICE = 0;
+    DECOMMISSIONING = 1;
+    DECOMMISSIONED = 2;
+    ENTERING_MAINTENANCE = 3;
+    IN_MAINTENANCE = 4;
+}
+
+enum QueryScope {
+    CLUSTER = 0;
+    POOL = 1;
+}
+
+message Node {
+    DatanodeDetailsProto nodeID = 1;
+    repeated NodeState nodeStates = 2;
+    repeated NodeOperationalState nodeOperationalStates = 3;
+}
+
+message NodePool {
+    repeated Node nodes = 1;
+}
+
+message DatanodeUsageInfoProto {
+    optional int64 capacity = 1;
+    optional int64 used = 2;
+    optional int64 remaining = 3;
+    optional DatanodeDetailsProto node = 4;
+}
+
+/**
+ * LifeCycleState for HSTM object creation state machine:
+ *    ->Allocated: allocated on HSTM but client has not started creating it yet.
+ *    ->Creating: allocated and assigned to client to create but not ack-ed yet.
+ *    ->Open: allocated on HSTM and created on datanodes and ack-ed by a client.
+ *    ->Close: tablet closed due to space all used or error.
+ *    ->Timeout -> tablet failed to create on datanodes or ack-ed by client.
+ *    ->Deleting(TBD) -> tablet will be deleted after timeout.
+ * 1. ALLOCATE-ed tablets on SCM can't serve key/block related operation
+ *    until ACK-ed explicitly which changes the state to OPEN.
+ * 2. Only OPEN/CLOSED tablets can serve key/block related operation.
+ * 3. ALLOCATE-ed tablets that are not ACK-ed timely will be TIMEOUT and
+ *    CLEANUP asynchronously.
+ */
+
+enum LifeCycleState {
+    OPEN = 0;
+    CLOSING = 1;
+    QUASI_CLOSED = 2;
+    CLOSED = 3;
+    DELETING = 4;
+    DELETED = 5; // object is deleted.
+}
+
+enum LifeCycleEvent {
+    FINALIZE = 0;
+    QUASI_CLOSE = 1;
+    CLOSE = 2; // !!Event after this has not been used yet.
+    FORCE_CLOSE = 3;
+    DELETE = 4;
+    CLEANUP = 5;
+}
+
+message TabletInfoProto {
+    // Replace int64 with TabletID message
+    int64 tabletID = 1;
+    LifeCycleState state = 2;
+    optional PipelineID pipelineID = 3;
+    uint64 usedBytes = 4;
+    uint64 numberOfKeys = 5;
+    optional int64 stateEnterTime = 6;
+    string owner = 7;
+    optional int64 deleteTransactionId = 8;
+    optional int64 sequenceId = 9;
+    ReplicationFactor replicationFactor  = 10;
+    ReplicationType replicationType  = 11;
+}
+
+message TabletWithPipeline {
+  TabletInfoProto tabletInfo = 1;
+  Pipeline pipeline = 2;
+}
+
+message GetScmInfoRequestProto {
+    optional string traceID = 1;
+}
+
+message GetScmInfoResponseProto {
+    string clusterId = 1;
+    string scmId = 2;
+    repeated string peerRoles = 3;
+}
+
+message AddScmRequestProto {
+    string clusterId = 1;
+    string scmId = 2;
+    string ratisAddr = 3;
+}
+
+message AddScmResponseProto {
+    bool success = 1;
+    optional string scmId = 2;
+}
+
+enum ReplicationType {
+    RAFT = 0;
+    STAND_ALONE = 1;
+    CHAINED = 2;
+}
+
+enum ReplicationFactor {
+    ONE = 0;
+    THREE = 1;
+}
+
+enum HstmOps {
+    allocateBlock = 0;
+    tabletBlocksInfoList = 1;
+    getScmInfo = 2;
+    deleteBlock = 3;
+    createReplicationPipeline = 4;
+    allocateTablet = 5;
+    getTablet = 6;
+    getTabletWithPipeline = 7;
+    listTablet = 8;
+    deleteTablet = 9;
+    queryNode = 10;
+}
+
+message ExcludeListProto {
+    repeated string datanodes = 1;
+    // Replace int64 with TabletID message
+    repeated int64 tabletIds = 2;
+    repeated PipelineID pipelineIds = 3;
+}
+
+/**
+ * Block ID that uniquely identify a block by HSTM.
+ */
+message TabletBlockID {
+    // Replace int64 with TabletID message
+    int64 tabletID = 1;
+    int64 localID = 2;
+}
+
+message SecretKeyProto {
+    uint32 keyId = 1;
+    uint64 expiryDate = 2;
+    bytes privateKeyBytes = 3;
+    bytes publicKeyBytes = 4;
+}
+
+/**
+ * Security token identifier
+ */
+message TokenProto {
+  bytes identifier = 1;
+  bytes password = 2;
+  string kind = 3;
+  string service = 4;
+}
+
+/**
+ * Information for the Hdds block token.
+ * When adding further fields, make sure they are optional as they would
+ * otherwise not be backwards compatible.
+ */
+message BlockTokenSecretProto {
+    /**
+     * File access permissions mode.
+     */
+    enum AccessModeProto {
+        READ = 0;
+        WRITE = 1;
+        COPY = 2;
+        DELETE = 3;
+    }
+    string ownerId = 1;
+    string blockId = 2;
+    uint64 expiryDate = 3;
+    string omCertSerialId = 4;
+    repeated AccessModeProto modes = 5;
+    uint64 maxLength = 6;
+}
+
+message BlockID {
+    TabletBlockID tabletBlockID = 1;
+    optional uint64 blockCommitSequenceId = 2; // [default = 0];
+}
+
+/**
+ * Information for Certificate Revocation List.
+ */
+message CRLInfoProto {
+    string x509CRL = 1;
+    uint64 creationTimestamp = 2;
+    int64 crlSequenceID = 3;
+}
+
+/**
+ * Information for X509 Certificate.
+ */
+message CertInfoProto {
+    string x509Certificate = 1;
+    uint64 timestamp = 2;
+}
