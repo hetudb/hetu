@@ -42,8 +42,8 @@ impl<W: io::Write + Send> AsyncMysqlShim<W> for Backend {
 
     async fn on_execute<'a>(
         &'a mut self,
-        _: u32,
-        _: hetu_mywire::ParamParser,
+        _id: u32,
+        _param: ParamParser<'a>,
         results: QueryResultWriter<'a, W>,
     ) -> io::Result<()> {
         let resp = OkResponse::default();
