@@ -18,18 +18,19 @@ notifications:
   pullrequests: github@hetudb.com
   jira_options: link label worklog
 github:
-  description: "Hetu Distributed Database"
-  homepage: https://hetudb.com
+  description: "Hetu Distributed Real-Time Database"
+  homepage: https://www.hetudb.com
   labels:
-    - arrow
     - big-data
     - dataframe
-    - distributed
+    - distributed-systems
     - olap
     - python
     - database
     - rust
     - sql
+    - serverless
+    - lsm-tree
   enabled_merge_buttons:
     squash: true
     merge: false
