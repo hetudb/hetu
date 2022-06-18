@@ -68,12 +68,14 @@ impl<W: io::Write + Send + Sync> AsyncMysqlShim<W> for Backend<W> {
 
     async fn on_execute<'a>(
         &'a mut self,
-        _: u32,
-        _: hetu_mywire::ParamParser,
-        results: QueryResultWriter<'a, W>,
+        _id: u32,
+        _param: ParamParser<'a>,
+        writer: QueryResultWriter<'a, W>,
     ) -> Result<()> {
-        let resp = OkResponse::default();
-        results.completed(resp)?;
+        writer.error(
+            ErrorKind::ER_UNKNOWN_ERROR,
+            "Execute is not support in HetuDB.".as_bytes(),
+        )?;
         Ok(())
     }
 
