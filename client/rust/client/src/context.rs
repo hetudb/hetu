@@ -437,7 +437,7 @@ mod tests {
     #[cfg(feature = "standalone")]
     async fn test_standalone_mode() {
         use super::*;
-        let context = BallistaContext::standalone(&BallistaConfig::new().unwrap(), 1)
+        let context = HetuContext::standalone(&BallistaConfig::new().unwrap(), 1)
             .await
             .unwrap();
         let df = context.sql("SELECT 1;").await.unwrap();
@@ -451,7 +451,7 @@ mod tests {
         use std::fs::File;
         use std::io::Write;
         use tempfile::TempDir;
-        let context = BallistaContext::standalone(&BallistaConfig::new().unwrap(), 1)
+        let context = HetuContext::standalone(&BallistaConfig::new().unwrap(), 1)
             .await
             .unwrap();
 
@@ -501,7 +501,7 @@ mod tests {
             .set(BALLISTA_WITH_INFORMATION_SCHEMA, "true")
             .build()
             .unwrap();
-        let context = BallistaContext::standalone(&config, 1).await.unwrap();
+        let context = HetuContext::standalone(&config, 1).await.unwrap();
 
         let data = "Jorge,2018-12-13T12:12:10.011Z\n\
                     Andrew,2018-11-13T17:11:10.011Z";
@@ -553,7 +553,7 @@ mod tests {
             .set(BALLISTA_WITH_INFORMATION_SCHEMA, "true")
             .build()
             .unwrap();
-        let context = BallistaContext::standalone(&config, 1).await.unwrap();
+        let context = HetuContext::standalone(&config, 1).await.unwrap();
 
         context
             .register_parquet(
@@ -609,7 +609,7 @@ mod tests {
     #[tokio::test]
     #[cfg(feature = "standalone")]
     async fn test_empty_exec_with_one_row() {
-        use crate::context::BallistaContext;
+        use crate::context::HetuContext;
         use hetu_core::config::{
             BallistaConfigBuilder, BALLISTA_WITH_INFORMATION_SCHEMA,
         };
@@ -618,7 +618,7 @@ mod tests {
             .set(BALLISTA_WITH_INFORMATION_SCHEMA, "true")
             .build()
             .unwrap();
-        let context = BallistaContext::standalone(&config, 1).await.unwrap();
+        let context = HetuContext::standalone(&config, 1).await.unwrap();
 
         let sql = "select EXTRACT(year FROM to_timestamp('2020-09-08T12:13:14+00:00'));";
 
@@ -638,7 +638,7 @@ mod tests {
             .set(BALLISTA_WITH_INFORMATION_SCHEMA, "true")
             .build()
             .unwrap();
-        let context = BallistaContext::standalone(&config, 1).await.unwrap();
+        let context = HetuContext::standalone(&config, 1).await.unwrap();
 
         let df = context
             .sql("SELECT 1 as NUMBER union SELECT 1 as NUMBER;")
@@ -688,7 +688,7 @@ mod tests {
     #[tokio::test]
     #[cfg(feature = "standalone")]
     async fn test_aggregate_func() {
-        use crate::context::BallistaContext;
+        use crate::context::HetuContext;
         use datafusion::arrow;
         use datafusion::arrow::util::pretty::pretty_format_batches;
         use datafusion::prelude::ParquetReadOptions;
@@ -700,7 +700,7 @@ mod tests {
             .set(BALLISTA_WITH_INFORMATION_SCHEMA, "true")
             .build()
             .unwrap();
-        let context = BallistaContext::standalone(&config, 1).await.unwrap();
+        let context = HetuContext::standalone(&config, 1).await.unwrap();
 
         context
             .register_parquet(
