@@ -50,15 +50,17 @@ redundancy in the case of a scheduler failing.
 
 # Project Status and Roadmap
 
-Hetu is currently a proof-of-concept and provides batch execution of SQL queries. Although it is already capable of
+Hetu is currently a proof-of-concept based on datafusion and provides batch execution of SQL queries. Although it is already capable of
 executing complex queries, it is not yet scalable or robust.
 
-There is an excellent discussion in https://github.com/hetudb/hetu/issues/30 about the future of the project
+There is an excellent discussion in https://github.com/hetudb/hetu/issues/1 about the future of the project
 and we encourage you to participate and add your feedback there if you are interested in using or contributing to
 Hetu.
 
 The current initiatives being considered are:
 
+- Supports reliable raft-based meta storage
+- Supports lightweight storage based on lsm-tree real-time writes and reads
 - Continue to improve the current batch-based execution
 - Add support for low-latency query execution based on a streaming model
 
