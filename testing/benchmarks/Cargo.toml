@@ -32,16 +32,12 @@ simd = ["datafusion/simd"]
 snmalloc = ["snmalloc-rs"]
 
 [dependencies]
-# Workspace dependencies
-hetu-client = { path = "../../client/rust/client" }
 
-# Github dependencies
 datafusion = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
 datafusion-proto = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
-
-# Crates.io dependencies
 env_logger = "0.9"
 futures = "0.3"
+hetu-client = { path = "../../client/rust/client" }
 mimalloc = { version = "0.1", optional = true, default-features = false }
 num_cpus = "1.13.0"
 rand = "0.8.4"

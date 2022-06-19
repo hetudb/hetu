@@ -34,14 +34,9 @@ path = "examples/standalone-sql.rs"
 required-features = ["hetu-client/standalone"]
 
 [dependencies]
-# Workspace dependencies
-hetu-client = { path = "../client/rust/client", version = "0.1.0" }
-
-# Github dependencies
 datafusion = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
-
-# Crates.io dependencies
 futures = "0.3"
+hetu-client = { path = "../client/rust/client", version = "0.1.0" }
 num_cpus = "1.13.0"
 prost = "0.10"
 tokio = { version = "1.0", features = ["macros", "rt", "rt-multi-thread", "sync", "parking_lot"] }

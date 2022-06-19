@@ -28,39 +28,34 @@ edition = "2021"
 snmalloc = ["snmalloc-rs"]
 
 [dependencies]
-# Workspace dependencies
-hetu-core = { path = "../core", version = "0.1.0" }
-hetu-error = { path = "../../common/error", version = "0.1.0"}
-hetu-mywire = { path = "../../lib/mywire", version = "0.1.0"}
-
-# Github dependencies
-datafusion = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
-datafusion-proto = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
-
-# Crates.io dependencies
 anyhow = "1"
 arrow = { version = "15.0.0" }
 arrow-flight = { version = "15.0.0" }
 async-trait = "0.1.41"
 chrono = { version = "0.4", default-features = false }
+clap = { version = "3.1.18", features = ["derive"] }
+ctrlc = "3.2.2"
+datafusion = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
+datafusion-proto = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
 env_logger = "0.9"
 futures = "0.3"
+futures-util = { version = "0.3", default-features = false }
+hetu-core = { path = "../core", version = "0.1.0" }
+hetu-error = { path = "../../common/error", version = "0.1.0" }
+hetu-mywire = { path = "../../lib/mywire", version = "0.1.0" }
 hyper = "0.14.4"
 log = "0.4"
+mysql_common = { version = "0.28.0", features = ["chrono"] }
 parking_lot = "0.12"
+serde = { version = "1.0.137", features = ["derive"] }
+serfig = "0.0.2"
 snmalloc-rs = { version = "0.3", optional = true }
+sqlparser = "0.17"
 tempfile = "3"
 tokio = { version = "1.0", features = ["macros", "rt", "rt-multi-thread", "parking_lot"] }
 tokio-stream = { version = "0.1", features = ["net"] }
 tonic = "0.7"
 uuid = { version = "1.0", features = ["v4"] }
-clap = { version = "3.1.18", features = ["derive"] }
-serfig = "0.0.2"
-serde = { version = "1.0.137", features = ["derive"] }
-mysql_common = { version = "0.28.0", features = ["chrono"] }
-sqlparser = "0.17"
-futures-util = { version = "0.3", default-features = false }
-ctrlc = "3.2.2"
 
 [dev-dependencies]
 mysql = "22.0.0"

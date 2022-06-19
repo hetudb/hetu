@@ -24,17 +24,12 @@ edition = "2021"
 rust-version = "1.59"
 
 [dependencies]
-# Workspace dependencies
-hetu-core = { path = "../../../core/core", version = "0.1.0" }
-hetu-query = { path = "../../../core/query", version = "0.1.0", optional = true }
-hetu-cloudsrv = { path = "../../../core/cloudsrv", version = "0.1.0", optional = true }
-
-# Github dependencies
 datafusion = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
 datafusion-proto = { git = "https://github.com/apache/arrow-datafusion", rev = "3c1c188e1476575f113a511789e398fdd5c009cd" }
-
-# Crates.io dependencies
 futures = "0.3"
+hetu-cloudsrv = { path = "../../../core/cloudsrv", version = "0.1.0", optional = true }
+hetu-core = { path = "../../../core/core", version = "0.1.0" }
+hetu-query = { path = "../../../core/query", version = "0.1.0", optional = true }
 log = "0.4"
 parking_lot = "0.12"
 sqlparser = "0.17"
