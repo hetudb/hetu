@@ -16,9 +16,9 @@
 # specific language governing permissions and limitations
 # under the License.
 
-#set -e
+set -e
 
-pushd ..
+pushd ../..
 . ./dev/build-set-env.sh
 popd
 docker build -t hetu-tpchgen:$HETU_VERSION -f tpchgen.dockerfile .
@@ -29,6 +29,6 @@ if test -f "$FILE"; then
     echo "$FILE exists."
 else
   mkdir data 2>/dev/null
-  docker run -v `pwd`/data:/data -it --rm ballista-tpchgen:$HETU_VERSION
+  docker run -v `pwd`/data:/data -it --rm hetu-tpchgen:$HETU_VERSION
   ls -l data
 fi

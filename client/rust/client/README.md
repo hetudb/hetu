@@ -98,7 +98,7 @@ use datafusion::prelude::CsvReadOptions;
 #[tokio::main]
 async fn main() -> Result<()> {
    // create configuration
-   let config = HetuConfig::builder()
+   let config = BallistaConfig::builder()
        .set("hetu.query.shuffle.partitions", "4")
        .build()?;
 

@@ -236,7 +236,7 @@ enum BenchmarkSubCommandOpt {
 #[derive(Debug, StructOpt)]
 #[structopt(about = "loadtest command")]
 enum LoadtestOpt {
-    #[structopt(name = "ballista-load")]
+    #[structopt(name = "hetu-load")]
     BallistaLoadtest(BallistaLoadtestOpt),
 }
 
