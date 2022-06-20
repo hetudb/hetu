@@ -13,24 +13,15 @@
 # limitations under the License
 
 [package]
-name = "metabase-proto"
-authors = ["Hetudb Authors <opensource@hetudb.com>"]
+name = "prost-helpers"
 version = "0.1.0"
-publish = false
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+proc-macro = true
 
 [dependencies]
-common-proto = { package = "common-proto", path = "../common-proto" }
-prost = "0.9.0"
-prost-types = "0.9"
-schema-proto = { package = "schema-proto", path = "../schema-proto" }
-security-proto = { package = "security-proto", path = "../security-proto" }
-tonic = { version = "0.6.2", features = ["transport", "codegen", "prost", "tls-roots", "tls"] }
-
-[build-dependencies]
-tonic-build = "0.6.2"
-
-[dev-dependencies]
-anyhow = "1.0.52"
+proc-macro-error = "1.0"
+proc-macro2 = { version = "1", default-features = false }
+quote = "1"
+syn = "1"

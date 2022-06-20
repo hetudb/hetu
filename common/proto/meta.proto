@@ -135,7 +135,7 @@ message HetuResponse {
     Type cmdType = 1; // Type of the command
 
     // A string that identifies this command, we generate  Trace ID in Hetu
-    // frontend and this allows us to trace that command all over hetu.
+    // frontend and this allows us to trace that command all over Hetu.
     optional string traceID = 2;
 
     optional bool success = 3; // [default = true];
@@ -297,12 +297,11 @@ message DatabaseInfo {
     repeated common.KeyValue metadata = 5;
     optional uint64 quotaInBytes = 6;
     optional int32  quotaInTable = 7; // [default = -2];
-    optional uint64  usedNamespace = 8;
+    optional uint64  usedNamespaceInBytes = 8;
 
     optional uint64 objectID = 11;
     optional uint64 updateID = 12;
 }
-
 
 message TableInfo {
     enum StorageEngineProto {
@@ -980,9 +979,9 @@ message CancelDelegationTokenResponseProto {
 }
 
 /**
- The cloud service that takes care of Hetu tenant.
+ The hetu cloud service that takes care of Hetu tenant.
 */
-service HetuCloudManagerService {
+service HetuCloudService {
     // A client-to-HCS RPC to send client requests to Hetu Raft server
     rpc submitRequest(HetuRequest)
             returns(HetuResponse);

@@ -82,6 +82,10 @@ cpp/Brewfile.lock.json
 target
 Cargo.lock
 !client/rust/cli/Cargo.lock
+common/prost/src/*.rs
+common/prost/src/sim/*.rs
+!common/prost/src/lib.rs
+**/file_descriptor_set.bin
 
 rusty-tags.vi
 .history

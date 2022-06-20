@@ -40,7 +40,7 @@ message DatanodeDetailsProto {
 /**
  The DatanodeDetailsProto is a basic type that will be shared by many Proto,
  to reduce the number of fields transferred by ProtoBuf, only need to extend
- DatanodeDetailsProto for registering DataNode with SCM and Recon.
+ DatanodeDetailsProto for registering DataNode with HCS
 */
 message ExtendedDatanodeDetailsProto {
     DatanodeDetailsProto datanodeDetails = 1;
@@ -67,10 +67,10 @@ message HetuStorageNodeDetailsProto {
     string hostName = 3;      // Hostname of HS.
 }
 
-message HetuServerNodeDetailsProto {
-    string hsNodeId = 1;     // HS Node Id.
-    string clusterId = 2;     // Cluster Id of HS cluster.
-    string hostName = 3;      // Hostname of HS.
+message HetuQueryNodeDetailsProto {
+    string hqNodeId = 1;     // HQ Node Id.
+    string clusterId = 2;     // Cluster Id of HQ cluster.
+    string hostName = 3;      // Hostname of HQ.
 }
 
 message Port {
@@ -120,11 +120,9 @@ message KeyValue {
  * Type of the node.
  */
 enum NodeType {
-    HCS = 0;         // Hetu Cloud Service
-    HC = 1;         // Hetu Compute Service
-    HSTM = 2;        // Hetu Storage Tablet Manager (Tablet, Block、Chunk)
-    DATANODE = 3;   // DataNode
-    RECON = 4;      // Recon
+    HCS = 0;         // Hetu Cloud Service (Cluster、Metadata、etc.)
+    HQ = 1;         // Hetu Query Service
+    HS = 2;         // Hetu Storage
 }
 
 // Should we rename NodeState to DatanodeState?

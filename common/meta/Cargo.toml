@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,17 +13,21 @@
 # limitations under the License
 
 [package]
-name = "common-proto"
-authors = ["Hetudb Authors <opensource@hetudb.com>"]
+name = "hetu-meta"
+description = "Hetu Meta Lib"
+license = "Apache-2.0"
 version = "0.1.0"
-publish = false
+homepage = "https://www.hetudb.com"
+repository = "https://github.com/hetudb/hetu"
+authors = ["HetuDB <dev@hetudb.com>"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bytes = "1.0"
-prost = "0.9.0"
+hetu-error = { path = "../error" }
+hetu-pb = { path = "../prost" }
 
 [build-dependencies]
-prost-build = "0.9"
+
+[dev-dependencies]

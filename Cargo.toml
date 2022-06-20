@@ -18,12 +18,10 @@ members = [
     "client/rust/client",
 
     # Common
-    "common/photon-proto",
-    "common/schema-proto",
-    "common/common-proto",
-    "common/security-proto",
-    "common/metabase-proto",
+    "common/meta",
     "common/error",
+    "common/prost",
+    "common/prost/helpers",
 
     # Core
     "core/core",
