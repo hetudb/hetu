@@ -85,7 +85,8 @@ pub fn implement(field: &Field) -> TokenStream2 {
         .ident
         .unwrap_or_else(|| abort!(field.span(), "Expected the field to have a name"));
 
-    let getter_fn_name = Ident::new(&format!("get_{}", field_name.unraw()), Span::call_site());
+    let getter_fn_name =
+        Ident::new(&format!("get_{}", field_name.unraw()), Span::call_site());
 
     match extract_enum_type_from_field(field) {
         None => {}

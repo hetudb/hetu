@@ -53,14 +53,20 @@ pub struct ProstFieldNotFound(pub &'static str);
 #[cfg(test)]
 mod tests {
     use crate::common::KeyValue;
-    use crate::meta::{DatabaseInfo};
+    use crate::meta::DatabaseInfo;
     use crate::schema::schema_proto::{ColumnKeyProto, ColumnKeyTypeProto};
 
     #[test]
     fn test_getter() {
         let metadata = vec![
-            KeyValue { key: "k1".to_string(), value: Option::from("v1".to_string()) },
-            KeyValue { key: "k2".to_string(), value: Option::from("v2".to_string()) },
+            KeyValue {
+                key: "k1".to_string(),
+                value: Option::from("v1".to_string()),
+            },
+            KeyValue {
+                key: "k2".to_string(),
+                value: Option::from("v2".to_string()),
+            },
         ];
 
         let database_id: DatabaseInfo = DatabaseInfo {
@@ -100,7 +106,7 @@ mod tests {
             quota_in_table: None,
             used_namespace_in_bytes: None,
             object_id: Option::from(1),
-            update_id: None
+            update_id: None,
         };
         assert_eq!(new_id.object_id.unwrap(), 1);
     }

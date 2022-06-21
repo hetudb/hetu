@@ -33,7 +33,8 @@ mod generate;
 #[proc_macro_error]
 pub fn any_pb(input: TokenStream) -> TokenStream {
     // Parse the string representation
-    let ast: DeriveInput = syn::parse(input).expect_or_abort("Couldn't parse for getters");
+    let ast: DeriveInput =
+        syn::parse(input).expect_or_abort("Couldn't parse for getters");
 
     // Build the impl
     let gen = produce(&ast);

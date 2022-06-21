@@ -32,8 +32,7 @@ impl Debug for KeyValue {
 
 impl PartialEq for KeyValue {
     fn eq(&self, other: &Self) -> bool {
-        self.key.eq(&other.key)
-            && self.value == other.value
+        self.key.eq(&other.key) && self.value == other.value
     }
 }
 

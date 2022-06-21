@@ -14,7 +14,7 @@
 
 [package]
 name = "hetu-pb"
-description = "Hetu Protobuf Lib - Hetu metadata protobuf"
+description = "Hetu Protobuf Lib - Hetu metadata pb"
 license = "Apache-2.0"
 version = "0.1.0"
 homepage = "https://www.hetudb.com"

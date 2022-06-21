@@ -21,11 +21,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let proto_files = vec![
         // "catalog",
-        "common",
-        "meta",
-        "photon",
-        "schema",
-        "security",
+        "common", "meta", "photon", "schema", "security",
     ];
     let protos: Vec<String> = proto_files
         .iter()
