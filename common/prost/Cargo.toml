@@ -36,3 +36,4 @@ tonic = { version = "=0.2.0-alpha.3", package = "madsim-tonic" }
 [build-dependencies]
 pbjson-build = "0.3"
 tonic-build = { version = "=0.2.0-alpha.1", package = "madsim-tonic-build" }
+prost-build = { version =  "0.10" }

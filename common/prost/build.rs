@@ -28,6 +28,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .map(|f| format!("{}/{}.proto", proto_dir, f))
         .collect();
 
+    let mut config = prost_build::Config::new();
+    config.protoc_arg("--experimental_allow_proto3_optional");
+
     // Build protobuf structs.
     let out_dir = PathBuf::from("./src");
     let file_descriptor_set_path: PathBuf = out_dir.join("file_descriptor_set.bin");
@@ -36,7 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .compile_well_known_types(true)
         .type_attribute(".", "#[derive(prost_helpers::AnyPB)]")
         .out_dir(out_dir.as_path())
-        .compile(&protos, &[proto_dir.to_string()])
+        .compile_with_config(config, &protos, &[proto_dir.to_string()])
         .expect("Failed to compile grpc!");
 
     // Implement `serde::Serialize` on those structs.

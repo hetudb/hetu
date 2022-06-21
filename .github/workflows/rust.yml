@@ -26,7 +26,7 @@ jobs:
   # build the library, a compilation step used by multiple steps below
   linux-build-lib:
     name: Build Libraries on AMD64 Rust ${{ matrix.rust }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: [amd64]
