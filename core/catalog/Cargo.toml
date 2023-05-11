@@ -13,8 +13,8 @@
 # limitations under the License
 
 [package]
-name = "hetu-metabase"
-description = "Hetu Metabase - Raft-based meta storage"
+name = "hetu-catalog"
+description = "Hetu Catalog - Raft-based meta storage"
 license = "Apache-2.0"
 version = "0.1.0"
 homepage = "https://www.hetudb.com"
