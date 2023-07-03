@@ -69,6 +69,24 @@ The current initiatives being considered are:
 The easiest way to get started is to run one of the standalone or distributed [examples](./examples/README.md). After
 that, refer to the [Getting Started Guide](client/rust/client/README.md).
 
+```
+$ mysql -h 127.0.0.1 -P 3307 -u root -p123
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 5.7.25-HetuDB-v0.1.0-alpha HetuDB Server (Apache License 2.0)
+Community Edition, MySQL 5.7 compatiible
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+mysql> select 'hello, hetu';
++---------------------+
+| Utf8("hello, hetu") |
++---------------------+
+| hello, hetu         |
++---------------------+
+1 row in set (0.24 sec)
+```
+
 ## Architecture Overview
 
 - Refer to the [developer documentation](docs/developer) for the [Architecture Overview](/docs/developer/architecture.md)
