@@ -71,6 +71,44 @@ manually specifying a bind port. For example:
 ```bash
 RUST_LOG=info hetu-query --bind-port 50052 -c 4
 ```
+## MySQL Client Connectiong
+```
+$ mysql -h 127.0.0.1 -P 3307 -u root -p123
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 5.7.25-HetuDB-v0.1.0-alpha HetuDB Server (Apache License 2.0)
+Community Edition, MySQL 5.7 compatiible
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> select 'hello, hetu';
++---------------------+
+| Utf8("hello, hetu") |
++---------------------+
+| hello, hetu         |
++---------------------+
+1 row in set (0.24 sec)
+ExtraInfo
+
+mysql> mysql> explain select 'hello, hetu' limit 10;
++---------------+----------------------------------------------------------------------------------------------------------------------------+
+| plan_type     | plan                                                                                                                       |
++---------------+----------------------------------------------------------------------------------------------------------------------------+
+| logical_plan  | Limit: 10
+  Projection: Utf8("hello, hetu")
+    EmptyRelation                                                                                                                            |
+| physical_plan | GlobalLimitExec: limit=10 
+  ProjectionExec: expr=[hello, hetu as Utf8("hello, hetu")]
+    EmptyExec: produce_one_row=true                                                                                                          |
++---------------+----------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.23 sec)
+```
 
 ## Executing a query
 
