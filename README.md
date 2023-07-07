@@ -85,6 +85,18 @@ mysql> select 'hello, hetu';
 | hello, hetu         |
 +---------------------+
 1 row in set (0.24 sec)
+mysql> explain select 'hello, hetu' limit 10;
++---------------+----------------------------------------------------------------------------------------------------------------------------+
+| plan_type     | plan                                                                                                                       |
++---------------+----------------------------------------------------------------------------------------------------------------------------+
+| logical_plan  | Limit: 10
+  Projection: Utf8("hello, hetu")
+    EmptyRelation                                                                                                                            |
+| physical_plan | GlobalLimitExec: limit=10 
+  ProjectionExec: expr=[hello, hetu as Utf8("hello, hetu")]
+    EmptyExec: produce_one_row=true                                                                                                          |
++---------------+----------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.23 sec)
 ```
 
 ## Architecture Overview
