@@ -14,7 +14,7 @@
   limitations under the License
 -->
 
-# Hetu is a real-time OLAP database management system.
+# Prototype System：Hetu is a real-time OLAP database management system.
 
 The goal is to achieve a system of high concurrency, real-time write and
 analytical query optimization, with mixed workloads
